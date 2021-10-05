@@ -1,6 +1,10 @@
-package graphs;
 
-public class Vertex {
+
+class Vertex {
+        public Vertex(String name){
+	    this.name=name;
+        }
+        public String name;
 	private String color;
 	private Vertex parent;
 	private int distance;

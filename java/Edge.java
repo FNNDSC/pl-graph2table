@@ -1,6 +1,6 @@
-package graphs;
 
-public class Edge {
+
+class Edge {
 	private Vertex src;
 	private Vertex dst;
 	private int weight;

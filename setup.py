@@ -6,8 +6,8 @@ with open(path.join(path.dirname(path.abspath(__file__)), 'README.rst')) as f:
 
 setup(
     name             = 'graph2table',
-    version          = '0.1',
-    description      = 'An app to ...',
+    version          = '0.1.2',
+    description      = 'An app to convert a graphical representation of a tree to a tabular representation',
     long_description = readme,
     author           = 'Sandip Samal',
     author_email     = 'sandip.samal@childrens.harvard.edu',

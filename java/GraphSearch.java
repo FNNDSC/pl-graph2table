@@ -65,6 +65,7 @@ public class GraphSearch {
 				}
 			}
 			u.setColor("Black");
+			System.out.println("Visited node :" + u.name);
 				
 		}
 		

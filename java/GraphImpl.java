@@ -12,6 +12,8 @@ public class GraphImpl {
     GraphImpl(int[][]adjMat){
 
 	int n = adjMat.length;
+	
+	System.out.println("Creating vertices");
 
 	// Lets create the vertices
 	List<Vertex> vertices = new ArrayList<>();
@@ -20,7 +22,7 @@ public class GraphImpl {
 	    vertices.add(ver);
 	}
 
-	
+	System.out.println("Creating edges");
 	// Lets create edges
 	List<Edge> edges = new ArrayList<>();
 	for(int i =0;i<n; i++ ){
@@ -34,13 +36,25 @@ public class GraphImpl {
 	    }
 	}
 
+        System.out.println("Creating graph");
 	this.graph = new Graph(vertices,edges); 
 	    
     }
 
     public static void main (String args[]){
+    
+        System.out.println("Printing message from python :" + args[0]);
 
-	int [][] arr = {{1,0,1,0},{0,0,0,0},{1,1,1,1},{0,1,0,1}};
+	int [][] arr = {{0,1,0,0,0,0,0,0,0,0}
+	               ,{0,0,1,1,0,0,0,0,0,0}
+	               ,{0,0,0,0,0,0,0,0,0,0}
+	               ,{0,0,0,0,1,1,0,0,0,0}
+	               ,{0,0,0,0,0,0,0,0,0,0}
+	               ,{0,0,0,0,0,0,1,0,0,0}
+	               ,{0,0,0,0,0,0,0,1,0,1}
+	               ,{0,0,0,0,0,0,0,0,1,0}
+	               ,{0,0,0,0,0,0,0,0,0,0}
+	               ,{0,0,0,0,0,0,0,0,0,0}};
 
 
 	GraphImpl grphImpl = new GraphImpl(arr);
@@ -49,11 +63,12 @@ public class GraphImpl {
 	Graph g1 = grphImpl.getGraph();
 
 	GraphSearch gsImpl = new GraphSearch(g1);
-
+        
+        System.out.println("Initializing source as " + g1.getVertices().get(0).name + " and running BFS");
 	gsImpl.BFS(g1.getVertices().get(0));
-
+        System.out.println("\t\tCurrent Node:\t\tParent Node");
 	for(Vertex v :g1.getVertices()){
-	    System.out.println(v.name + ":" + (v.getParent()!=null? v.getParent().name:"Root"));
+	    System.out.println("\t\t\t"+v.name + ":\t\t" + (v.getParent()!=null? v.getParent().name:"Root"));
 	}
 	
     }

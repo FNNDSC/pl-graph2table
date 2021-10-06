@@ -10,7 +10,9 @@
 
 from chrisapp.base import ChrisApp
 import os
-
+import platform
+import os.path,subprocess
+from subprocess import STDOUT,PIPE
 
 Gstr_title = r"""
                        _      _____  _        _     _      
@@ -120,6 +122,12 @@ class Graph2table(ChrisApp):
         Define the CLI arguments accepted by this plugin app.
         Use self.add_argument to specify a new app argument.
         """
+        self.add_argument(  '--comment',
+                            dest        = 'comment',
+                            type        = str,
+                            optional    = True,
+                            help        = "a simple string to print",
+                            default     = "")
 
     def run(self, options):
         """
@@ -127,10 +135,25 @@ class Graph2table(ChrisApp):
         """
         print(Gstr_title)
         print('Version: %s' % self.get_version())
-        os.system('java HelloWorld')
+        self.compile_java('Edge.java')
+        self.compile_java('Vertex.java')
+        self.compile_java('Graph.java')
+        self.compile_java('GraphSearch.java')
+        self.compile_java('GraphImpl.java')
+        
+        self.execute_java('GraphImpl', options.comment)
 
     def show_man_page(self):
         """
         Print the app's man page.
         """
         print(Gstr_synopsis)
+    def compile_java(self,java_file):
+        subprocess.check_call(['javac', java_file])
+        
+
+    def execute_java(self,java_file, stdin):
+        java_class,ext = os.path.splitext(java_file)
+        cmd = ['java', java_class, stdin]
+        proc = subprocess.run(cmd, stdout=PIPE, stderr=STDOUT)
+        print (proc.stdout.decode("utf-8"))

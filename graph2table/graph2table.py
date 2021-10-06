@@ -135,11 +135,11 @@ class Graph2table(ChrisApp):
         """
         print(Gstr_title)
         print('Version: %s' % self.get_version())
-        self.compile_java('Edge.java')
-        self.compile_java('Vertex.java')
-        self.compile_java('Graph.java')
-        self.compile_java('GraphSearch.java')
-        self.compile_java('GraphImpl.java')
+        
+        # Compile java files present in JAVA dir
+        java_files=[d for d in os.listdir("java") if os.path.isfile(os.path.join("java",d))]
+        for java_file in java_files:
+            self.compile_java(java_file)
         
         self.execute_java('GraphImpl', options.comment)
 

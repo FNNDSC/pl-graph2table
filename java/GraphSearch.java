@@ -26,6 +26,7 @@ public class GraphSearch {
 		for(Vertex u:graph.getVertices()) {
 			if(u.getColor()=="White")
 				dfsVisit(u,time);
+
 		}
 		
 	}
@@ -40,8 +41,7 @@ public class GraphSearch {
 			}
 		}
 		u.setColor("Black");
-		time=time+1;
-		
+		time=time+1;	
 	}
 	public void BFS(Vertex s) {
 		for(Vertex u:graph.getVertices()) {
@@ -54,18 +54,26 @@ public class GraphSearch {
 		s.setParent(null);
 		List<Vertex> visited=new ArrayList<Vertex>(); 
 		visited.add(s);
+		int t =0;
 		while(!visited.isEmpty()) {
 			Vertex u=visited.remove(0);
+			for(int i=0; i<t;i++)
+			    System.out.print(" ");
+			if(adj(u).size()>0)
+			    System.out.print(u.name);
 			for(Vertex v:adj(u)) {
 				if(v.getColor()=="White") {
+				        t+=3;
 					v.setColor("Gray");
+					System.out.print("->");
+					System.out.print(v.name);
 					v.setDistance(u.getDistance()+1);
 					v.setParent(u);
 					visited.add(v);
 				}
 			}
+			System.out.println("");
 			u.setColor("Black");
-			System.out.println("Visited node :" + u.name);
 				
 		}
 		
@@ -91,6 +99,7 @@ public class GraphSearch {
 			Vertex u=exMin(Q);
 			S.add(u);
 			Q.remove(u);
+			
 			for(Vertex v:adj(u)) {
 				relax(u,v);
 				Q.add(v);

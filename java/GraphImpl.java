@@ -65,6 +65,7 @@ public class GraphImpl {
 	GraphSearch gsImpl = new GraphSearch(g1);
         
         System.out.println("Initializing source as " + g1.getVertices().get(0).name + " and running BFS");
+        System.out.println("\n\n");
 	gsImpl.BFS(g1.getVertices().get(0));
         System.out.println("\t\tCurrent Node:\t\tParent Node");
 	for(Vertex v :g1.getVertices()){

@@ -9,16 +9,16 @@ public class GraphImpl {
 	return this.graph;
 	
     }
-    GraphImpl(int[][]adjMat){
+    GraphImpl(String [] prev, String [] next, String [] plugins){
 
-	int n = adjMat.length;
+	int n = prev.length;
 	
 	System.out.println("Creating vertices");
 
 	// Lets create the vertices
 	List<Vertex> vertices = new ArrayList<>();
-	for(int v=0; v<n;v++){
-	    Vertex ver = new Vertex(Integer.toString(v));
+	for(String plugin:plugins){
+	    Vertex ver = new Vertex(plugin);
 	    vertices.add(ver);
 	}
 
@@ -26,38 +26,40 @@ public class GraphImpl {
 	// Lets create edges
 	List<Edge> edges = new ArrayList<>();
 	for(int i =0;i<n; i++ ){
-	    for(int j=0; j<n; j++){
-		if(adjMat[i][j]==1){
-                    // if path exists, create an edge
-		    Edge eg = new Edge(vertices.get(i),vertices.get(j),0,0,0);
+	    
+                   // if path exists, create an edge
+                   int x = Integer.parseInt(prev[i]);
+                   int y = Integer.parseInt(next[i]);
+		    Edge eg = new Edge(vertices.get(x),vertices.get(y),0,0,0);
 		    edges.add(eg);
-		    
-		}
-	    }
+
 	}
 
         System.out.println("Creating graph");
 	this.graph = new Graph(vertices,edges); 
 	    
     }
-
+    //Clean up args frpm python
+    public static String cleanUp(String input){
+        input=input.replace("[","");
+        input=input.replace("]","");
+        input=input.replace("'","");
+        input=input.replace(" ","");
+        
+        return input;
+        
+    }
+    
     public static void main (String args[]){
     
-        System.out.println("Printing message from python :" + args[0]);
+        String [] inputs = args;
+        String [] prev = cleanUp( inputs[0]).split(",");
+        String [] next = cleanUp( inputs[1]).split(",");
+        String [] plugins = cleanUp( inputs[2]).split(",");
 
-	int [][] arr = {{0,1,0,0,0,0,0,0,0,0}
-	               ,{0,0,1,1,0,0,0,0,0,0}
-	               ,{0,0,0,0,0,0,0,0,0,0}
-	               ,{0,0,0,0,1,1,0,0,0,0}
-	               ,{0,0,0,0,0,0,0,0,0,0}
-	               ,{0,0,0,0,0,0,1,0,0,0}
-	               ,{0,0,0,0,0,0,0,1,0,1}
-	               ,{0,0,0,0,0,0,0,0,1,0}
-	               ,{0,0,0,0,0,0,0,0,0,0}
-	               ,{0,0,0,0,0,0,0,0,0,0}};
+	
 
-
-	GraphImpl grphImpl = new GraphImpl(arr);
+	GraphImpl grphImpl = new GraphImpl(prev,next,plugins);
        
 
 	Graph g1 = grphImpl.getGraph();
@@ -67,10 +69,7 @@ public class GraphImpl {
         System.out.println("Initializing source as " + g1.getVertices().get(0).name + " and running BFS");
         System.out.println("\n\n");
 	gsImpl.BFS(g1.getVertices().get(0));
-        System.out.println("\t\tCurrent Node:\t\tParent Node");
-	for(Vertex v :g1.getVertices()){
-	    System.out.println("\t\t\t"+v.name + ":\t\t" + (v.getParent()!=null? v.getParent().name:"Root"));
-	}
+        
 	
     }
 }

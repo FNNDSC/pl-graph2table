@@ -13,7 +13,7 @@ import os
 import platform
 import os.path,subprocess
 from subprocess import STDOUT,PIPE
-
+import numpy as np
 Gstr_title = r"""
                        _      _____  _        _     _      
                       | |    / __  \| |      | |   | |     
@@ -135,13 +135,42 @@ class Graph2table(ChrisApp):
         """
         print(Gstr_title)
         print('Version: %s' % self.get_version())
+       
+        #path =options.inputdir+'/file.txt'
+        #a_WORKFLOWSPEC=np.genfromtxt(path, delimiter=',',usecols=np.arange(0,1))
         
+        a_WORKFLOWSPEC=('0:0 fnndsc/pl-dircopy',                            
+        "0:1 fnndsc/pl-simpledsapp",
+        "1:2 fnndsc/pl-pfdicom_tagsub",
+        "1:3 fnndsc/pl-pfdicom_tagextract",               
+        "2:4 fnndsc/pl-pfdicom_tagextract",                  
+        "2:5 fnndsc/pl-fshack",      
+        "5:6 fnndsc/pl-multipass",
+        "6:7 fnndsc/pl-pfdorun",
+        "5:8 fnndsc/pl-mgz2lut_report")
+        
+
+        
+        x=[]
+        y=[]
+        plugins=[]
+
+        for item in a_WORKFLOWSPEC:
+            coordinates = item.split(" ")[0].split(':')
+            plugins.append(item.split(" ")[-1])
+            # x axis values
+            x.append( coordinates[0])
+            # corresponding y axis values
+            y.append( coordinates[1])
+
+
         # Compile java files present in JAVA dir
         java_files=[d for d in os.listdir("java") if os.path.isfile(os.path.join("java",d))]
         for java_file in java_files:
             self.compile_java(java_file)
         
-        self.execute_java('GraphImpl', options.comment)
+        stdin = [str(x),str(y),str(plugins)]
+        self.execute_java('GraphImpl',stdin )
 
     def show_man_page(self):
         """
@@ -154,6 +183,9 @@ class Graph2table(ChrisApp):
 
     def execute_java(self,java_file, stdin):
         java_class,ext = os.path.splitext(java_file)
-        cmd = ['java', java_class, stdin]
+        cmd = ['java', java_class]
+        for arg in stdin:
+            cmd.append(arg)
+       
         proc = subprocess.run(cmd, stdout=PIPE, stderr=STDOUT)
         print (proc.stdout.decode("utf-8"))

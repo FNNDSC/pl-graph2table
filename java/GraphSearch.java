@@ -57,15 +57,12 @@ public class GraphSearch {
 		int t =0;
 		while(!visited.isEmpty()) {
 			Vertex u=visited.remove(0);
-			for(int i=0; i<t;i++)
-			    System.out.print(" ");
-			if(adj(u).size()>0)
-			    System.out.print(u.name);
+			System.out.print(u.name);
 			for(Vertex v:adj(u)) {
 				if(v.getColor()=="White") {
 				        t+=3;
 					v.setColor("Gray");
-					System.out.print("->");
+					System.out.print(" -> ");
 					System.out.print(v.name);
 					v.setDistance(u.getDistance()+1);
 					v.setParent(u);

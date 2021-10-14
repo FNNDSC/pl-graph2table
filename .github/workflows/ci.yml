@@ -108,10 +108,7 @@ jobs:
           tags: |
             ${{ steps.determine.outputs.dock_image }}
             localhost:5000/${{ steps.determine.outputs.dock_image }}
-            user/app:latest
-            user/app:1.0.0
-            ghcr.io/user/app:latest
-            ghcr.io/user/app:1.0.0
+            ghcr.io/${{ steps.determine.outputs.dock_image }}
           platforms: linux/amd64
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
